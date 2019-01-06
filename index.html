@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Required Stylesheets -->
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./node_modules/bootstrap-treeview/dist/bootstrap-treeview.min.css" rel="stylesheet">
+    <!-- Required Javascript -->
+    <script src="./node_modules/jquery/dist/jquery.js"></script>
+    <!--<script src="./js/bootstrap.js"></script>-->
+    <script src="./node_modules/bootstrap-treeview/src/js/bootstrap-treeview.js"></script>
+
+</head>
+<body>
+<div id="tree" style="width: 300px"></div>
+<script type="text/javascript">
+    <!--
+    var click_stats = true;
+    var $tree =  $('div#tree');
+    /**
+     * 增加节点
+     */
+    function addNote() {
+        //得到选择的节点
+        var nodeData = $tree.treeview('getSelected')[0];
+        //获取数据，添加到树中
+        $.getJSON("treeAddData.json", function (data) {
+            $tree.treeview("addNode", [nodeData.nodeId, {node: data}]);
+        });
+    }
+
+    /**
+     * 删除节点,如果该节点如果是根节点，不能删除
+     */
+    function deleteNode() {
+        var nodeData = $tree.treeview('getSelected')[0];
+        $tree.treeview("deleteNode", nodeData.nodeId);
+    }
+
+    /**
+     * 删除全部子节点
+     */
+    function deleteChildrenNode() {
+        var nodeData = $tree.treeview('getSelected')[0];
+        $tree.treeview("deleteChildrenNode", nodeData.nodeId);
+    }
+
+    $(function () {
+        function getTree() {
+            // Some logic to retrieve, or generate tree structure
+
+
+            var data = [{
+                text: "p1",
+                nodes: [{ text: "p1-1", id: '00001', nodeId: '00001' }, { text: "p1-2", id: '00002' }, { text: "p1-3", id: '00003' }, { text: "p1-4", id: '00004', nodes: [{ text: 'p1-1-1', id: '00005'},{ text: 'p1-1-2', id: '00006'}]}]
+
+            }]
+            return data;
+        }
+
+        $('#tree').treeview({
+            data: getTree(),         // data is not optional
+            highlightSelected : true,
+            levels: 5,
+            showIcon:true,
+            uiLibrary: 'bootstrap4',
+            multiSelect: false,
+            onNodeSelected:function (event,data) {
+                var selected_data = $("#tree").treeview("getSelected");
+                //alert(selected_data[0].nodeId);
+                if(!selected_data[0].state.expanded) {
+                    $("#tree").treeview("addNode", [selected_data[0].nodeId, {node: {text: "新加的菜单", state:{ expend:true}}}]);
+                    $("#tree").treeview("getSelected")[0].state.expanded = true;
+                    // click_stats = false;
+                    $tree.treeview("expandNode",selected_data[0]);
+                 }else{
+                     deleteChildrenNode();
+                    $("#tree").treeview("getSelected")[0].state.expanded = false;
+                     // click_stats = true;
+                    $tree.treeview("collapseNode",selected_data[0]);
+                }
+
+
+            }
+
+        });
+
+        $("#btn").click(function (e) {
+
+            var arr = $('#tree').treeview('getSelected');
+
+            //alert(JSON.stringify(arr));
+            for (var key in arr) {
+                alert(arr[key].id);
+            }
+
+        })
+
+    })
+
+    -->
+</script>
+<input type="button" id="btn" text="button" value="button" class="btn btn-primary">
+</body>
+</html>
